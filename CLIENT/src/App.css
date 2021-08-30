@@ -1,0 +1,22 @@
+.App{
+  padding: 10px;
+}
+
+.navbar{
+  background-color: gray;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: white;
+  margin: 30px;
+  padding: auto;
+  font-size: 20px;
+  text-decoration: none;
+}
+.link:hover {
+  color: rgb(49, 32, 32);
+  text-decoration: underline;
+}

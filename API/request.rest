@@ -1,0 +1,43 @@
+### 
+POST http://localhost:4000/movies 
+Content-Type: application/json
+
+{
+"title": "El origen de los guardianes", 
+"description": "pelicula de fantasia", 
+"year": 2012,
+"URL_image": "https://es.web.img3.acsta.net/medias/nmedia/18/91/56/29/20282576.jpg"
+}
+
+### 
+PUT http://localhost:4000/movies/3 
+Content-Type: application/json
+
+{
+"title": "El origen de los guardianes", 
+"description": "pelicula de fantasia", 
+"year": 2012,
+"URL_image": "https://es.web.img3.acsta.net/medias/nmedia/18/91/56/29/20282576.jpg"
+}
+
+
+###
+
+POST http://localhost:4000/users
+Content-Type: application/json
+
+{
+    "username" : "Rose",
+    "pass": "rosita",
+    "rol":"user"
+}
+
+###
+
+POST http://localhost:4000/auth
+Content-Type: application/json
+
+{
+    "username" : "",
+    "pass": ""
+}
