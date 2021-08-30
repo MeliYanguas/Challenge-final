@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const connection = require('express-myconnection');
 const key = require('../key');
 
-// muestra los usuarios (para testear)
+// muestra los usuarios (para probar)
 router.get('/users', (req, res) => {
   req.getConnection((err, connection) => {
     if (err) return res.status(500).send(err);
@@ -67,15 +67,6 @@ router.post('/auth', async (req, res) => {
   } else {
     res.status(401).send('los campos no pueden estar vacios');
   }
-});
-
-router.get('/saludos', (req, res) => {
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401).json({ auth: false, msg: 'no token provided' });
-  }
-  const decoded = jwt.verify(token, key.secret);
-  res.send(`saludos ${decoded.name}`);
 });
 
 // ---------------

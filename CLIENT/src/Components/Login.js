@@ -36,21 +36,7 @@ const Login = () => {
       } catch (error) {
         console.log(error);
       }
-
-      // fetch('http://localhost:4000/auth', requestInit)
-      //   .then((res) => res.text())
-      //   .then((res) => console.log(res));
     }
-
-    // // consulta
-    // const requestInit = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(datos),
-    // };
-    // fetch('http://localhost:4000/auth', requestInit)
-    //   .then((res) => res.text())
-    //   .then((res) => console.log(res));
   };
 
   return (

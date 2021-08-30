@@ -25,14 +25,3 @@ app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`app listening at http://localhost:${port}`);
 });
-
-// insert DATA
-/*
-      const connection = mysql.createConnection(dbSettings);
-      connection.query(`
-INSERT INTO users (username,pass,rol)
-VALUES ("admin","password","admin")`, (err, rows) => {
-        if (err) throw err;
-      });
-      connection.end();
-*/
