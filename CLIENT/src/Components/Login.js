@@ -27,7 +27,7 @@ const Login = () => {
             Accept: 'application/json',
           },
           body: JSON.stringify(dataUser),
-          mode: 'no-cors',
+          mode: 'cors',
         };
         const result = await fetch('http://localhost:4000/auth', requestInit);
         // https://webhook.site

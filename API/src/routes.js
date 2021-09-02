@@ -1,3 +1,5 @@
+/* eslint-disable*/
+
 const express = require('express');
 
 const router = express.Router();
@@ -12,7 +14,7 @@ router.get('/users', (req, res) => {
   req.getConnection((err, connection) => {
     if (err) return res.status(500).send(err);
 
-    connection.query('SELECT username,pass,rol FROM users', (err, rows) => {
+    connection.query('SELECT username,pass,role FROM users', (err, rows) => {
       if (err) return res.status(500).send(err);
 
       res.json(rows);
@@ -24,13 +26,13 @@ router.get('/users', (req, res) => {
 router.post('/users', async (req, res) => {
   const { username } = req.body;
   const { pass } = req.body;
-  const { rol } = req.body;
+  const { role } = req.body;
 
   const hashedPassword = await bcrypt.hash(pass, 8);
   req.getConnection((err, connection) => {
     if (err) res.send(err);
 
-    connection.query('INSERT INTO users SET ?', { username, pass: hashedPassword, rol }, async (err, results) => {
+    connection.query('INSERT INTO users SET ?', { username, pass: hashedPassword, role }, async (err, results) => {
       if (err) {
         res.send(err);
       } else {
@@ -41,7 +43,7 @@ router.post('/users', async (req, res) => {
 });
 
 // authentication
-router.post('/auth', async (req, res) => {
+router.post('/auth' ,async (req, res) => {
   const { username } = req.body;
   const { pass } = req.body;
   const hashedPassword = await bcrypt.hash(pass, 10);
@@ -50,17 +52,14 @@ router.post('/auth', async (req, res) => {
     req.getConnection((err, connection) => {
       if (err) res.status(501).send(err);
 
-      connection.query('SELECT username,pass,rol FROM users WHERE username = ?', [username], async (err, results) => {
+      connection.query('SELECT username,pass,role FROM users WHERE username = ?', [username], async (err, results) => {
         if (results.lenth === 0 || !(await bcrypt.compare(pass, results[0].pass))) {
           res.status(401).send('usuario o password incorrectos');
         } else {
           // res.send('login correcto');
-          if (results[0].rol === 'user') {
-            res.status(201).send('hola usuario!');
-          } else if (results[0].rol === 'admin') {
-            const token = jwt.sign({ username }, key.secret, { expiresIn: '1d' });
-            res.status(201).json({ msg: 'AUTENTICACION EXITOSA COMO ADMIN', token });
-          }
+          const token = jwt.sign({ username }, key.secret, { expiresIn: '1d' });
+          res.status(201).json({ msg: 'AUTENTICACION EXITOSA', token });
+          
         }
       });
     });
@@ -69,17 +68,21 @@ router.post('/auth', async (req, res) => {
   }
 });
 
+
+
 // ---------------
-router.get('/movies', (req, res) => {
-  req.getConnection((err, connection) => {
-    if (err) return res.status(500).send(err);
-
-    connection.query('SELECT id,title,description,year,URL_image FROM movies_list', (err, rows) => {
-      if (err) return res.status(500).send(err);
-
-      res.json(rows);
-    });
-  });
+router.post('/favs', verifyToken, (req, res) => {
+  jwt.verify(req.token, key.secret, (err, authData) => {
+    if(err){
+      res.sendStatus(403);
+    } else{
+      res.json({
+        msg: 'agregado a favoritos....',
+        authData
+      });
+    }
+  })
+  
 });
 
 // ---endpoint admin----
@@ -113,6 +116,36 @@ router.post('/movies', (req, res) => {
       if (err) return res.status(500).send(err);
 
       res.send('movie added to the list');
+    });
+  });
+});
+
+// format of token
+// authorization: Bearer <access_token>
+
+// verify token
+function verifyToken  (req, res, next) {
+  // get auth header value
+  const bearerHeader = req.headers['authorization']; 
+  if(typeof bearerHeader !== 'undefined'){
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+};
+
+// ---------------
+router.get('/movies', (req, res) => {
+  req.getConnection((err, connection) => {
+    if (err) return res.status(500).send(err);
+
+    connection.query('SELECT id,title,description,year,URL_image FROM movies_list', (err, rows) => {
+      if (err) return res.status(500).send(err);
+
+      res.json(rows);
     });
   });
 });
