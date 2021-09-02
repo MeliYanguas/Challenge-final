@@ -1,6 +1,8 @@
-/* eslint-disable no-console */
+/* eslint-disable */
 import React, { useState } from 'react';
 import './styleSimple.css';
+
+import { useLocation } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -42,11 +44,12 @@ const Login = () => {
   return (
     <div style={{ width: '500px' }} className="route">
       <h1>LOGIN</h1>
-      <form>
+      <form onSubmit={login}>
         <input
           type="text"
           onChange={(e) => setUsername(e.target.value)}
           name="username"
+          value={username}
           placeholder="USERNAME"
         />
         <br />
@@ -55,12 +58,12 @@ const Login = () => {
           onChange={(e) => setPass(e.target.value)}
           name="pass"
           placeholder="PASSWORD"
+          value={pass}
         />
         <br />
         <input
           type="submit"
           value="Login"
-          onClick={login}
         />
       </form>
     </div>

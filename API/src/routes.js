@@ -43,6 +43,9 @@ router.post('/users', async (req, res) => {
 });
 
 // authentication
+
+//falataria que si el usuario es incorrecto mande un mensaje 
+
 router.post('/auth' ,async (req, res) => {
   const { username } = req.body;
   const { pass } = req.body;
