@@ -1,18 +1,23 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import './styleSimple.css';
 
-import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
+
+  const location = useHistory();
+  
+  
 
   // let { username, password } = datos;
 
   const login = async (e) => {
     e.preventDefault();
     // console.log(username,pass)
+    location.push('/')
 
     const dataUser = { username, pass };
 
